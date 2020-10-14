@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => playlog\User::class,
+            'model' => Playlog\User::class,
         ],
 
         // 'users' => [

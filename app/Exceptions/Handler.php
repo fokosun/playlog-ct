@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog\Exceptions;
+namespace Playlog\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;

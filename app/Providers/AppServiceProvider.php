@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog\Providers;
+namespace Playlog\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog\Http\Middleware;
+namespace Playlog\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

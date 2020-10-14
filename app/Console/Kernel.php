@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog\Console;
+namespace Playlog\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

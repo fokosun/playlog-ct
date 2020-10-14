@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => playlog\User::class,
+        'model' => Playlog\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

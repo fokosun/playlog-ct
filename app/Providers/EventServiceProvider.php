@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog\Providers;
+namespace Playlog\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'playlog\Events\Event' => [
-            'playlog\Listeners\EventListener',
+        'Playlog\Events\Event' => [
+            'Playlog\Listeners\EventListener',
         ],
     ];
 

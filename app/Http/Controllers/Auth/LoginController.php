@@ -1,8 +1,8 @@
 <?php
 
-namespace playlog\Http\Controllers\Auth;
+namespace Playlog\Http\Controllers\Auth;
 
-use playlog\Http\Controllers\Controller;
+use Playlog\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller

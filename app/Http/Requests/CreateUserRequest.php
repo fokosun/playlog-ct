@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog\Http\Requests;
+namespace Playlog\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace playlog\Http\Controllers\Auth;
+namespace Playlog\Http\Controllers\Auth;
 
-use playlog\User;
-use playlog\Http\Controllers\Controller;
+use Playlog\User;
+use Playlog\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -58,7 +58,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \playlog\User
+     * @return \Playlog\User
      */
     protected function create(array $data)
     {

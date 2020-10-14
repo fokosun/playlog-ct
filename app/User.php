@@ -1,6 +1,6 @@
 <?php
 
-namespace playlog;
+namespace Playlog;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;

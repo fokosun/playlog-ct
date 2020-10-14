@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(playlog\User::class, function (Faker\Generator $faker) {
+$factory->define(Playlog\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [

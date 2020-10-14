@@ -1,0 +1,2 @@
+<div>registration form</div>
+

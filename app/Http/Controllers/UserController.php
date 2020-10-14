@@ -1,13 +1,26 @@
 <?php
 
-namespace playlog\Http\Controllers;
+namespace Playlog\Http\Controllers;
 
-use playlog\Http\Requests\CreateUserRequest;
-use Illuminate\Http\Request;
+use Playlog\Http\Requests\CreateUserRequest;
 
 class UserController extends Controller
 {
-    public function store(CreateUserRequest $request)
+	/**
+	 * Display registration form
+	 */
+	public function getRegister()
 	{
+		return view('auth/register');
 	}
+
+	/**
+	 * Display login form
+	 */
+	public function getLogin()
+	{
+		return view('auth/login');
+	}
+
+    public function store(CreateUserRequest $request){}
 }

@@ -11,11 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
 
-Route::get('/login', 'UserController@getLogin');
-Route::get('/register', 'UserController@getRegister');
+Route::get('/', 'HomeController@index')->middleware('guest');
 
-Route::post('users', 'UserController@store');
+Route::get('/feed', 'FeedController@index')->name('feed');
+
+//Route::get('/logout', 'UserController@postLogout')->name('user.logout');
+
+Route::post('/comments', 'CommentController@store')->name('comment.new');
+
+Route::get('/comments', 'CommentController@delete')->name('comment.delete');

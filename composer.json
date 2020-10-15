@@ -7,14 +7,15 @@
     "require": {
         "php": ">=5.6.4",
         "doctrine/dbal": "^2.11",
-        "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/framework": "^6.0",
+        "laravel/tinker": "^1.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7",
-      "ext-json": "*"
+        "ext-json": "*",
+        "fzaninotto/faker": "^1.4",
+        "jasonmccreary/laravel-test-assertions": "^1.0",
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
         "classmap": [
@@ -43,6 +44,10 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
+        ],
+        "post-clear-route-cache": [
+            "php artisan cache:clear",
+            "php artisan route:cache"
         ]
     },
     "config": {

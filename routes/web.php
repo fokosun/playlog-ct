@@ -14,14 +14,19 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes();
-
 Route::get('/', 'HomeController@index')->middleware('guest');
 
-Route::get('/feed', 'FeedController@index')->name('feed');
+Auth::routes();
 
-Route::post('/comments', 'CommentController@store')->name('comment.new');
+Route::group(['middleware' => 'auth'], function () {
 
-Route::delete('/comments/{comment}/{user}', 'CommentController@delete')->name('comment.delete');
+	Route::get('/feed', 'FeedController@index')->name('feed');
 
-Route::post('/reactions/{author_id}/{comment_id}', 'CommentReactionController@store')->name('reaction.new');
+	Route::post('/comments', 'CommentController@store')->name('comment.new');
+
+	Route::delete('/comments/{comment}/{user}', 'CommentController@delete')->name('comment.delete');
+
+	Route::post('/reactions/{author_id}/{comment_id}', 'CommentReactionController@store')->name('reaction.new');
+
+	Route::post('/likes/{comment_id}', 'likeController@store')->name('like.new');
+});

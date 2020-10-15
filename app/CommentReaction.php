@@ -3,12 +3,11 @@
 namespace Playlog;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 
 class CommentReaction extends Model
 {
-    protected $fillable = ['content', 'author_id', 'comment_id'];
+    protected $fillable = ['content', 'author_id', 'comment_id', 'likes'];
 
 	public $appends = [
 		'posted_on',
@@ -35,10 +34,18 @@ class CommentReaction extends Model
 	}
 
 	/**
-	 *
+	 * @return string
 	 */
 	public function getPostedOnAttribute()
 	{
 		return Carbon::parse($this->attributes['created_at'])->diffForHumans();
+	}
+
+	/**
+	 * Get the total likes
+	 */
+	public function getLikes()
+	{
+		return $this->likes;
 	}
 }

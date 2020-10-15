@@ -45,7 +45,7 @@
                                 {{ $comment->reactions->count() }}
                             </span>
                             <span>
-                                <a href="">Comments</a>
+                                Comment(s)
                             </span>
                         </div>
                     </div>
@@ -61,20 +61,34 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <img src="https://megatherm-dev.in/rba/wp-content/uploads/2019/02/noavatar-profile.jpg"
-                                             style="vertical-align: middle;width: 35px;height: 35px;border-radius: 50%;" />
+                                             style="vertical-align: middle;width: 25px;height: 25px;border-radius: 50%;" />
                                         {{ $reaction->user()->get()->first()->username }} - {{ $reaction->posted_on }}
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="container">
-                                        <em>
-                                            {{ $reaction->content }}
-                                        </em>
+                                        <div>
+                                            <div class="col-md-8">
+                                                <div style="padding: 12px;">
+                                                    {{ $reaction->content }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <form action="{{ route('like.new', ['comment_id' => $reaction->id]) }}" method="POST">
+                                                <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+                                                <button>
+                                                    Like
+                                                </button>
+                                                <i class="fa fa-heart"></i>
+                                                {{ $reaction->likes }}
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="container">
-                                        <i class="fas fa-heart"></i> Like
+
                                     </div>
                                 </div>
                                 <br />

@@ -3,12 +3,11 @@
 namespace Playlog;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['content', 'photo_url', 'author_id'];
+    protected $fillable = ['content', 'photo_url', 'author_id', 'updated_at'];
 
     public $appends = [
     	'posted_on',

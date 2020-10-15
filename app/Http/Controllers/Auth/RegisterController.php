@@ -2,12 +2,9 @@
 
 namespace Playlog\Http\Controllers\Auth;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
-use Playlog\Http\Requests\CreateUserRequest;
 use Playlog\User;
 use Playlog\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use Playlog\Http\Requests\CreateUserRequest;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -52,23 +49,8 @@ class RegisterController extends Controller
 
 		$this->guard()->login($user);
 
-		return $this->registered($request, $user)
-			?: redirect($this->redirectPath());
+		return $this->registered($request, $user) ?: redirect($this->redirectPath());
 	}
-
-	/**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-        ]);
-    }
 
     /**
      * Create a new user instance after a valid registration.

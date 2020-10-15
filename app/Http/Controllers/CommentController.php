@@ -2,6 +2,7 @@
 
 namespace Playlog\Http\Controllers;
 
+use Playlog\User;
 use Playlog\Comment;
 use Illuminate\Support\Facades\Auth;
 use Playlog\Http\Requests\CreateCommentRequest;
@@ -33,11 +34,17 @@ class CommentController extends Controller
 	 * Delete a comment
 	 *
 	 * @param Comment $comment
+	 * @param User $user
+	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
 	 */
-	public function delete(Comment $comment)
+	public function delete(Comment $comment, User $user)
 	{
+		if (! $comment->user()->get()->first() === $user) {
+			return redirect()->back()->withErrors(['error' => 'Forbidden. You are not authorized to perform this action.']);
+		}
+
 		$comment->delete();
 
 		return redirect()->back();

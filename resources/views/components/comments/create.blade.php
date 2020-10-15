@@ -1,14 +1,10 @@
 <form action="{{ route('comment.new') }}" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div>
-        <input type="text" name="content" placeholder="Add a new comment" style="width: 100%;">
+        <input type="text" name="content" placeholder="Add a new comment" class="main-content">
+        <input type="submit" value="Post" class="submit-content">
     </div>
-    <div class="form-group row">
-        <div class="col-md-6">
-            <input id="photo" type="file" class="form-control" name="photo">
-        </div>
-        <div class="col-md-6">
-            <input type="submit" class="form-control" value="Post">
-        </div>
+    <div>
+        <input id="photo" type="file" name="photo" accept=".png, .jpg, .jpeg">
     </div>
 </form>

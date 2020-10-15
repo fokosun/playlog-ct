@@ -11,9 +11,9 @@
                 <div class="content">
                     <div>
                         <div style="font-weight: bold">
-                            <h3>
+                            <h4>
                                 Posted by: {{ $comment->user->username }} - {{ $comment->posted_on }}
-                            </h3>
+                            </h4>
                         </div>
                     </div>
                     <div>
@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-md-2">
                             @if($comment->author_id == \Illuminate\Support\Facades\Auth::user()->id)
-                                <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
+                                <form action="{{ route('comment.delete', [$comment->id, \Illuminate\Support\Facades\Auth::user()->id]) }}" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
                                     <div>
@@ -58,7 +58,7 @@
                     </div>
                     <div>
                         <div class="col-md-10">
-                            <input type="text" name="new_comment" id="new_comment" placeholder="write a comment ..." style="width: 100%;">
+                            @include('components.comments.reaction')
                         </div>
                     </div>
                     <div>

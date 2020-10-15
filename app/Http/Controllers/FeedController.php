@@ -14,7 +14,7 @@ class FeedController extends Controller
     public function index()
 	{
 		$comments = Comment::with(['user', 'reactions'])
-			->orderBy('updated_at', 'desc')
+			->orderByDesc('updated_at')
 			->paginate('5');
 
 		return view('feed', compact('comments'));

@@ -12,7 +12,7 @@ class CreateUserRequestTest extends TestCase
      */
     public function it_responds_with_422_if_the_username_and_password_are_not_given()
     {
-    	$response = $this->json('POST', '/users', []);
+    	$response = $this->json('POST', '/register', []);
     	$decoded = json_decode($response->getContent(), true);
 
     	$this->assertArrayHasKey('username', $decoded);
@@ -29,7 +29,7 @@ class CreateUserRequestTest extends TestCase
 	 */
 	public function it_responds_with_422_if_the_username_is_not_given()
 	{
-		$response = $this->json('POST', '/users', [
+		$response = $this->json('POST', '/register', [
 			'password' => 'iamatleastsixcharacterslong'
 		]);
 
@@ -47,7 +47,7 @@ class CreateUserRequestTest extends TestCase
 	 */
 	public function it_responds_with_422_if_the_password_is_not_given()
 	{
-		$response = $this->json('POST', '/users', [
+		$response = $this->json('POST', '/register', [
 			'username' => 'pumpkin'
 		]);
 
@@ -65,7 +65,7 @@ class CreateUserRequestTest extends TestCase
 	 */
 	public function it_responds_with_422_if_the_password_length_is_less_than_six_characters()
 	{
-		$response = $this->json('POST', '/users', [
+		$response = $this->json('POST', '/register', [
 			'username' => 'pumpkin',
 			'password' => 'less'
 		]);
@@ -84,7 +84,7 @@ class CreateUserRequestTest extends TestCase
 	 */
 	public function it_responds_with_200_if_validation_passes()
 	{
-		$response = $this->json('POST', '/users', [
+		$response = $this->json('POST', '/register', [
 			'username' => 'pumpkin',
 			'password' => 'goodpassword'
 		]);

@@ -21,4 +21,4 @@ Route::get('/feed', 'FeedController@index')->name('feed');
 
 Route::post('/comments', 'CommentController@store')->name('comment.new');
 
-Route::get('/comments', 'CommentController@delete')->name('comment.delete');
+Route::delete('/comments/{comment}', 'CommentController@delete')->name('comment.delete');

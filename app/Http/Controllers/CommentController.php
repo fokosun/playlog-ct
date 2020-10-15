@@ -22,4 +22,16 @@ class CommentController extends Controller
 
 		return redirect()->back();
 	}
+
+	/**
+	 * Delete a comment
+	 * @param Comment $comment
+	 * @throws \Exception
+	 */
+	public function delete(Comment $comment)
+	{
+		$comment->delete();
+
+		return redirect()->back();
+	}
 }

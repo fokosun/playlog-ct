@@ -22,9 +22,15 @@
                         </div>
                         <div class="col-md-2">
                             @if($comment->author_id == \Illuminate\Support\Facades\Auth::user()->id)
-                                <a href="{{ route('comment.delete', $comment->id) }}" style="text-decoration: none; color: #090909">
-                                    <i class="fas fa-trash black"></i>
-                                </a>
+                                <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+                                    <div>
+                                        <button>
+                                            <i class="fas fa-trash black"></i>
+                                        </button>
+                                    </div>
+                                </form>
                             @endif
                         </div>
                     </div>
@@ -77,5 +83,6 @@
         </div>
         <br /> <br />
     @endforeach
+        {{ $comments->links() }}
     @endif
 </div>

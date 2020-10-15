@@ -63,6 +63,10 @@ class CommentController extends Controller
 			return redirect()->back()->withErrors(['error' => 'Forbidden. You are not authorized to perform this action.']);
 		}
 
+		if ($comment->photo_url || Storage::disk('public')->get($comment->photo_url)) {
+			Storage::disk('public')->delete($comment->photo_url); //delete the image to declutter storage
+		}
+
 		$comment->delete();
 
 		return redirect()->back();

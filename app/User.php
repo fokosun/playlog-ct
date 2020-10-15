@@ -26,4 +26,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+	/**
+	 * A User has many reactions to comments
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function reactions()
+	{
+		return $this->hasMany(CommentReaction::class, 'author_id');
+	}
+
+	/**
+	 * A user has many comments
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function comment()
+	{
+		return $this->hasMany(Comment::class);
+	}
 }

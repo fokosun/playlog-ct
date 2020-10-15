@@ -11,14 +11,17 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->middleware('guest');
 
 Route::get('/feed', 'FeedController@index')->name('feed');
 
-//Route::get('/logout', 'UserController@postLogout')->name('user.logout');
-
 Route::post('/comments', 'CommentController@store')->name('comment.new');
 
-Route::delete('/comments/{comment}', 'CommentController@delete')->name('comment.delete');
+Route::delete('/comments/{comment}/{user}', 'CommentController@delete')->name('comment.delete');
+
+Route::post('/reactions/{author_id}/{comment_id}', 'CommentReactionController@store')->name('reaction.new');

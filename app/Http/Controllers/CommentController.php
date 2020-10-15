@@ -8,6 +8,12 @@ use Playlog\Http\Requests\CreateCommentRequest;
 
 class CommentController extends Controller
 {
+	/**
+	 * Create new comment
+	 *
+	 * @param CreateCommentRequest $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
     public function store(CreateCommentRequest $request)
 	{
 		$comment = new Comment([
@@ -25,7 +31,9 @@ class CommentController extends Controller
 
 	/**
 	 * Delete a comment
+	 *
 	 * @param Comment $comment
+	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
 	 */
 	public function delete(Comment $comment)

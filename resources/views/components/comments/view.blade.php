@@ -47,13 +47,6 @@
                             <span>
                                 <a href="">Comments</a>
                             </span>
-                            |
-                            <span style="font-weight: bold">
-                                80k
-                            </span>
-                            <span>
-                                <a href="">Likes</a>
-                            </span>
                         </div>
                     </div>
                     <div>
@@ -63,18 +56,28 @@
                     </div>
                     <div>
                         <div class="col-md-10">
+                            <br />
                             @foreach($comment->reactions as $reaction)
-                                <div>
-                                    <label>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <img src="https://megatherm-dev.in/rba/wp-content/uploads/2019/02/noavatar-profile.jpg"
+                                             style="vertical-align: middle;width: 35px;height: 35px;border-radius: 50%;" />
                                         {{ $reaction->user()->get()->first()->username }} - {{ $reaction->posted_on }}
-                                    </label>
-                                    <p>
-                                        {{ $reaction->content }}
-                                    </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <i class="fas fa-heart"></i> Like
+                                <div class="col-md-12">
+                                    <div class="container">
+                                        <em>
+                                            {{ $reaction->content }}
+                                        </em>
+                                    </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="container">
+                                        <i class="fas fa-heart"></i> Like
+                                    </div>
+                                </div>
+                                <br />
                             @endforeach
                         </div>
                     </div>

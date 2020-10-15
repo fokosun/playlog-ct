@@ -4,8 +4,10 @@ namespace Playlog\Http\Controllers;
 
 use Playlog\User;
 use Playlog\Comment;
+use Playlog\Jobs\PhotoUploadJob;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Playlog\Http\Requests\CreateCommentRequest;
 
 class CommentController extends Controller
@@ -31,6 +33,10 @@ class CommentController extends Controller
 			]);
 
 			return redirect()->back()->withErrors(['error' => 'There was an error processing this request. Please try again.']);
+		}
+
+		if ($photo = $request->file('photo')) {
+			PhotoUploadJob::dispatchNow($comment, $request);
 		}
 
 		return redirect()->back();

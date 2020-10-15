@@ -36,7 +36,9 @@
                     </div>
                     <div>
                         <div class="col-md-10">
-                            <img src="{{ $comment->photo_url }}">
+                            @if($comment->photo_url)
+                                <img src="{{url('uploads/'. $comment->photo_url)}}" style="width: 100%;">
+                            @endif
                         </div>
                     </div>
                     <div>
@@ -84,11 +86,6 @@
                                                 {{ $reaction->likes }}
                                             </form>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="container">
-
                                     </div>
                                 </div>
                                 <br />

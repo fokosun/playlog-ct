@@ -39,7 +39,7 @@ class CommentController extends Controller
 			PhotoUploadJob::dispatchNow($comment, $request);
 		}
 
-		return redirect()->back();
+		return redirect('/');
 	}
 
 	/**
@@ -69,6 +69,6 @@ class CommentController extends Controller
 
 		$comment->delete();
 
-		return redirect()->back();
+		return redirect('/');
 	}
 }

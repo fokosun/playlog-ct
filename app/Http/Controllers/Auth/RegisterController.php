@@ -2,6 +2,9 @@
 
 namespace Playlog\Http\Controllers\Auth;
 
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Playlog\Http\Requests\CreateUserRequest;
 use Playlog\User;
 use Playlog\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -39,7 +42,25 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
+	/**
+	 * @param CreateUserRequest $request
+	 * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|mixed
+	 */
+    public function register(CreateUserRequest $request)
+	{
+//		$this->validator($request->all())->validate();
+
+//		event(new Registered($user = $this->create($request->all())));
+
+		$user = $this->create($request->all());
+
+		$this->guard()->login($user);
+
+		return $this->registered($request, $user)
+			?: redirect($this->redirectPath());
+	}
+
+	/**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
@@ -48,9 +69,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
         ]);
     }
 
@@ -63,8 +83,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'username' => $data['username'],
             'password' => bcrypt($data['password']),
         ]);
     }

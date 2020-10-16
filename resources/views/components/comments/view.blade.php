@@ -77,14 +77,21 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <form action="{{ route('like.new', ['comment_id' => $reaction->id]) }}" method="POST">
-                                                <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                                                <button>
-                                                    Like
-                                                </button>
-                                                <i class="fa fa-heart"></i>
-                                                {{ $reaction->likes }}
-                                            </form>
+                                            <div
+                                                    class="col-md-2 btn-info like-btn"
+                                                    style="width: 50px!important;"
+                                                    data-icmt="{{ $reaction->id }}"
+                                            >
+                                                Like
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <i class="fa fa-heart"></i>
+                                                </span>
+                                                <span id="{{ 'reaction-' . $reaction->id  }}">
+                                                    {{ $reaction->likes }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -3,6 +3,8 @@
 namespace Playlog\Services;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\UnauthorizedException;
 use Playlog\Comment;
 use Illuminate\Http\Request;
 use Playlog\CommentReaction;
@@ -15,6 +17,10 @@ class CommentReactionService implements PlaylogServiceContract
 	 */
 	public function store(Request $request)
 	{
+		if ($request->get('author_id') !== Auth::user()->id) {
+			throw new UnauthorizedException('You are not authorized to perform this action.');
+		}
+
 		$reaction = new CommentReaction([
 			'author_id' => $request->get('author_id'),
 			'comment_id' => $request->get('comment_id'),

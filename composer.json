@@ -46,8 +46,7 @@
             "php artisan optimize"
         ],
         "post-clear-route-cache": [
-            "php artisan cache:clear",
-            "php artisan route:cache"
+            "php artisan cache:clear && php artisan route:cache"
         ]
     },
     "config": {

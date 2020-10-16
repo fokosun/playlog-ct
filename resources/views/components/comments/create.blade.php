@@ -15,6 +15,7 @@
                 style="height: 80px;"
         >
     </div>
+    <input type="hidden" value="{{ \Illuminate\Support\Facades\Auth::user()->id }}" name="author_id" id="author_id">
     <div>
         @if ($errors->has('content'))
             <span class="help-block" style="color: red">

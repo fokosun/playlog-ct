@@ -29,8 +29,7 @@ class CommentController extends Controller
 		}
 
 		if ($request->file('photo')) {
-			$request->merge(['resource_photo_path' => 'photo_url']);
-			$uploadService->upload($service->getComment(), $request);
+			$uploadService->upload($service->getComment(), $request->merge(['resource_photo_path' => 'photo_url']));
 		}
 
 		return redirect('/');

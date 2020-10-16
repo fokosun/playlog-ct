@@ -3,21 +3,26 @@
 namespace Playlog\Http\Controllers;
 
 use Playlog\CommentReaction;
+use Playlog\Http\Requests\CommentLikesRequest;
 
 class LikeController extends Controller
 {
 	/**
 	 * Increase comment likes
 	 *
-	 * @param $comment_id
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @param CommentLikesRequest $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
 	 */
-    public function store($comment_id)
+    public function store(CommentLikesRequest $request)
 	{
-		$comment = CommentReaction::findOrFail($comment_id);
+		$reaction = CommentReaction::find((int) $request->get('reaction_id'));
 
-		$comment->update(['likes' => $comment->getLikes() + 1]);
-
-		return redirect()->back();
+		if ($true = $reaction->update(['likes' => $reaction->getLikes() + 1])) {
+			return response()->json([
+				'updated' => true,
+				'likes_total' => $reaction->getLikes()
+			]);
+		}
 	}
 }

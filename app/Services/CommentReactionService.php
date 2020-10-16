@@ -13,14 +13,11 @@ use Illuminate\Validation\UnauthorizedException;
 class CommentReactionService implements PlaylogServiceContract
 {
 	/**
-	 * @inheritDoc
+	 * @param Request $request
+	 * @return bool|mixed
 	 */
 	public function store(Request $request)
 	{
-		if ((int) $request->get('author_id') !== Auth::user()->id) {
-			throw new UnauthorizedException('You are not authorized to perform this action.');
-		}
-
 		$reaction = new CommentReaction([
 			'author_id' => $request->get('author_id'),
 			'comment_id' => $request->get('comment_id'),

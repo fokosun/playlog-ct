@@ -13,12 +13,11 @@ class PhotoUploadService
 	 *
 	 * @param Model $resource
 	 * @param Request $request
-	 * @param array $options
 	 */
-	public function upload(Model $resource, Request $request, array $options)
+	public function upload(Model $resource, Request $request)
 	{
 		if ($photo = $request->file('photo')) {
-			PhotoUploadJob::dispatchNow($resource, $request, $options);
+			PhotoUploadJob::dispatchNow($resource, $request);
 		}
 	}
 }

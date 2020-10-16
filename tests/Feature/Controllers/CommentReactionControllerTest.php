@@ -33,7 +33,7 @@ class CommentReactionControllerTest extends TestCase
 			'author_id' => $this->user->getKey(),
 			'comment_id' => $comment->getKey()
 		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-			->assertJsonValidationErrors(['content']);
+			->assertJsonValidationErrors(['comment']);
 	}
 
 	/**
@@ -46,7 +46,7 @@ class CommentReactionControllerTest extends TestCase
 		$comment = Comment::all()->last();
 
 		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
+			'comment' => 'reply to a comment',
 			'comment_id' => $comment->getKey()
 		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
 			->assertJsonValidationErrors(['author_id']);
@@ -62,7 +62,7 @@ class CommentReactionControllerTest extends TestCase
 		$comment = Comment::all()->last();
 
 		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
+			'comment' => 'reply to a comment',
 			'author_id' => 0,
 			'comment_id' => $comment->getKey()
 		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -83,7 +83,7 @@ class CommentReactionControllerTest extends TestCase
 		$unauthenticated = factory(User::class)->create();
 
 		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
+			'comment' => 'reply to a comment',
 			'author_id' => $unauthenticated->getKey(),
 			'comment_id' => $comment->getKey()
 		]);
@@ -97,7 +97,7 @@ class CommentReactionControllerTest extends TestCase
 		$this->actingAs($this->user);
 
 		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
+			'comment' => 'reply to a comment',
 			'author_id' => $this->user->getKey()
 		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
 			->assertJsonValidationErrors(['comment_id']);
@@ -111,7 +111,7 @@ class CommentReactionControllerTest extends TestCase
 		$this->actingAs($this->user);
 
 		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
+			'comment' => 'reply to a comment',
 			'author_id' => $this->user->getKey(),
 			'comment_id' => 0
 		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -128,7 +128,7 @@ class CommentReactionControllerTest extends TestCase
 		$comment = Comment::all()->last();
 
 		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
+			'comment' => 'reply to a comment',
 			'author_id' => $this->user->getKey(),
 			'comment_id' => $comment->getKey()
 		]);

@@ -14,7 +14,7 @@ class LikeController extends Controller
 	 */
     public function store($comment_id)
 	{
-		$comment = CommentReaction::find($comment_id);
+		$comment = CommentReaction::findOrFail($comment_id);
 
 		$comment->update(['likes' => $comment->getLikes() + 1]);
 

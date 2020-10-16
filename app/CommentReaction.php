@@ -46,6 +46,6 @@ class CommentReaction extends Model
 	 */
 	public function getLikes()
 	{
-		return $this->likes;
+		return (int) $this->likes;
 	}
 }

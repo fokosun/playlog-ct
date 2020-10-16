@@ -4,6 +4,11 @@ namespace Playlog\Services;
 
 class FeedService
 {
+	protected array $defaults = [
+		'order_by' => 'created_at',
+		'order' => 'asc'
+	];
+
 	/**
 	 * Eagerload a given resource along with its relationships
 	 *
@@ -15,8 +20,12 @@ class FeedService
 	 */
 	public function index(string $resource, $relations = [], $options = [])
 	{
-		return $resource::with($relations)
-			->orderBy(($options['order_by'] ? $options['order_by'] : 'created_at') , ($options['order'] ? $options['order'] : 'asc'))
-			->paginate($options['paginate']);
+		$collection = $resource::with($relations)
+			->orderBy(
+				(isset($options['order_by']) ? $options['order_by'] : $this->defaults['order_by']),
+				(isset($options['order']) ? $options['order'] : $this->defaults['order'])
+			);
+
+		return (isset($options['paginate'])) ? $collection->paginate($options['paginate']) : $collection->get();
 	}
 }

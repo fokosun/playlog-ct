@@ -4,7 +4,7 @@ namespace Playlog\Http\Controllers\Auth;
 
 use Playlog\User;
 use Playlog\Http\Controllers\Controller;
-use Playlog\Http\Requests\CreateUserRequest;
+use Playlog\Http\Requests\UserStoreRequest;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -40,10 +40,10 @@ class RegisterController extends Controller
     }
 
 	/**
-	 * @param CreateUserRequest $request
+	 * @param UserStoreRequest $request
 	 * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|mixed
 	 */
-    public function register(CreateUserRequest $request)
+    public function register(UserStoreRequest $request)
 	{
 		$user = $this->create($request->all());
 

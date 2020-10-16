@@ -1,0 +1,24 @@
+<?php
+
+namespace Playlog\Services;
+
+use Illuminate\Http\Request;
+use Playlog\Jobs\PhotoUploadJob;
+use Illuminate\Database\Eloquent\Model;
+
+class PhotoUploadService
+{
+	/**
+	 * Upload image to disk
+	 *
+	 * @param Model $resource
+	 * @param Request $request
+	 * @param array $options
+	 */
+	public function upload(Model $resource, Request $request, array $options)
+	{
+		if ($photo = $request->file('photo')) {
+			PhotoUploadJob::dispatchNow($resource, $request, $options);
+		}
+	}
+}

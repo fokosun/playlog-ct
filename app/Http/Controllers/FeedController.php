@@ -3,19 +3,30 @@
 namespace Playlog\Http\Controllers;
 
 use Playlog\Comment;
+use Playlog\Services\FeedService;
 
 class FeedController extends Controller
 {
 	/**
 	 * Fetch all comments along with its relationships
 	 *
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
+	 * @param FeedService $service
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-    public function index()
+    public function index(FeedService $service)
 	{
-		$comments = Comment::with(['user', 'reactions'])
-			->orderByDesc('updated_at')
-			->paginate('5');
+		$comments = $service->index(
+			Comment::class,
+			[
+				'user',
+				'reactions'
+			], [
+				'order_by' => 'updated_at',
+				'order' => 'desc',
+				'paginate' => 5
+			]
+		);
 
 		return view('feed', compact('comments'));
 	}

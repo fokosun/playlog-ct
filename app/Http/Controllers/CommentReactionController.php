@@ -2,40 +2,33 @@
 
 namespace Playlog\Http\Controllers;
 
-use Carbon\Carbon;
-use Playlog\Comment;
 use Illuminate\Http\Request;
-use Playlog\CommentReaction;
-use Playlog\Http\Requests\CreateCommentRequest;
+use Playlog\Services\CommentReactionService;
 
 class CommentReactionController extends Controller
 {
 	/**
 	 * Create a new comment reaction (comment to a user comment)
 	 *
-	 * @param CreateCommentRequest $request
+	 * @param Request $request
 	 *
 	 * @param $author_id
 	 * @param $comment_id
+	 * @param CommentReactionService $service
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-    public function store(Request $request, $author_id, $comment_id)
+    public function store(Request $request, $author_id, $comment_id, CommentReactionService $service)
 	{
-		$reaction = new CommentReaction([
+		$request->merge([
 			'author_id' => $author_id,
-			'comment_id' => $comment_id,
-			'content' => $request->get('new_comment')
+			'comment_id' => $comment_id
 		]);
 
-		if (! $reaction->save()) {
+		if (! $service->store($request)) {
 			return redirect()->back()->withErrors('There was ab error processing this request. Please try again');
 		}
 
-		$root_comment = Comment::find($comment_id);
-
-		$root_comment->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
-		return redirect()->back();
+		return redirect('/');
 	}
 }

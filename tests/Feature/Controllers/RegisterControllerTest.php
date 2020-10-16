@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Controllers;
 
-use Playlog\User;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

@@ -3,12 +3,12 @@
 namespace Playlog\Services;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\UnauthorizedException;
 use Playlog\Comment;
-use Illuminate\Http\Request;
 use Playlog\CommentReaction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Playlog\Contracts\PlaylogServiceContract;
+use Illuminate\Validation\UnauthorizedException;
 
 class CommentReactionService implements PlaylogServiceContract
 {
@@ -17,22 +17,25 @@ class CommentReactionService implements PlaylogServiceContract
 	 */
 	public function store(Request $request)
 	{
-		if ($request->get('author_id') !== Auth::user()->id) {
+		if ((int) $request->get('author_id') !== Auth::user()->id) {
 			throw new UnauthorizedException('You are not authorized to perform this action.');
 		}
 
 		$reaction = new CommentReaction([
 			'author_id' => $request->get('author_id'),
 			'comment_id' => $request->get('comment_id'),
-			'content' => $request->get('new_comment')
+			'content' => $request->get('comment')
 		]);
 
 		if (! $reaction->save()) {
 			return false;
 		}
 
-		$root_comment = Comment::find($request->get('comment_id'));
-		$root_comment->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+		//if current active user is the one adding the comment reaction bubble it up in the feed page
+		if ((int) $request->get('author_id') == Auth::user()->id) {
+			$root_comment = Comment::find($request->get('comment_id'));
+			$root_comment->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+		}
 
 		return true;
 	}

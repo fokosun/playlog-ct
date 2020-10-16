@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Controllers;
 
-use Playlog\Comment;
 use Playlog\User;
+use Playlog\Comment;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 

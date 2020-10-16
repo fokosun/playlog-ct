@@ -2,11 +2,11 @@
 
 namespace Playlog\Jobs;
 
-use Illuminate\Support\Facades\Log;
-use Playlog\Comment;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,19 +17,22 @@ class PhotoUploadJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $comment;
-    protected $request;
+    protected Model $resource;
+    protected Request $request;
+    public array $options;
 
 	/**
 	 * Create a new job instance.
 	 *
-	 * @param Comment $comment
+	 * @param Model $resource
 	 * @param Request $request
+	 * @param array $options
 	 */
-    public function __construct(Comment $comment, Request $request)
+    public function __construct(Model $resource, Request $request, $options = [])
     {
-        $this->comment = $comment;
+        $this->resource = $resource;
         $this->request = $request;
+        $this->options = $options;
     }
 
 	/**
@@ -45,8 +48,10 @@ class PhotoUploadJob implements ShouldQueue
     	$ext = $photo->getClientOriginalExtension();
     	Storage::disk('public')->put($photo->getFilename() . '.' . $ext, File::get($photo));
 
-		Log::info('Image upload complete.');
+		Log::info('Image upload completed.');
 
-    	$this->comment->update(['photo_url' => $photo->getFilename() . '.' . $ext]);
+		if ($this->options["resource_photo_path"]) {
+			$this->resource->update([$this->options["resource_photo_path"] => $photo->getFilename() . '.' . $ext]);
+		}
     }
 }

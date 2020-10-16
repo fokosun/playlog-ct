@@ -6,20 +6,20 @@ use Playlog\User;
 use Playlog\Comment;
 use Playlog\Services\CommentService;
 use Playlog\Services\PhotoUploadService;
-use Playlog\Http\Requests\CreateCommentRequest;
+use Playlog\Http\Requests\CommentStoreRequest;
 
 class CommentController extends Controller
 {
 	/**
 	 * Create new comment
 	 *
-	 * @param CreateCommentRequest $request
+	 * @param CommentStoreRequest $request
 	 * @param PhotoUploadService $uploadService
 	 * @param CommentService $service
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-    public function store(CreateCommentRequest $request, PhotoUploadService $uploadService, CommentService $service)
+    public function store(CommentStoreRequest $request, PhotoUploadService $uploadService, CommentService $service)
 	{
 		if (! $service->store($request)) {
 			return redirect()->back()->withErrors(['error' => 'There was an error processing this request. Please try again.']);

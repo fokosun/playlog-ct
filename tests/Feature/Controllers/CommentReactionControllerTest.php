@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Controllers;
 
-use Illuminate\Http\Response;
-use Playlog\Comment;
 use Playlog\User;
 use Tests\TestCase;
+use Playlog\Comment;
+use Illuminate\Http\Response;
+use Playlog\CommentReaction;
+use Illuminate\Validation\UnauthorizedException;
 
 class CommentReactionControllerTest extends TestCase
 {
@@ -27,10 +29,114 @@ class CommentReactionControllerTest extends TestCase
 		$this->json('POST', '/comments', ['content' => 'lorem ipsum', 'author_id' => $this->user->getKey()]);
 		$comment = Comment::all()->last();
 
-		$this->json('POST', '/reactions/', [
+		$this->json('POST', '/reactions', [
 			'author_id' => $this->user->getKey(),
 			'comment_id' => $comment->getKey()
 		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
 			->assertJsonValidationErrors(['content']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_responds_with_a_422_if_the_author_id_is_not_given()
+	{
+		$this->actingAs($this->user);
+		$this->json('POST', '/comments', ['content' => 'lorem ipsum', 'author_id' => $this->user->getKey()]);
+		$comment = Comment::all()->last();
+
+		$this->json('POST', '/reactions', [
+			'content' => 'reply to a comment',
+			'comment_id' => $comment->getKey()
+		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+			->assertJsonValidationErrors(['author_id']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_responds_with_a_422_if_the_author_id_does_not_exist()
+	{
+		$this->actingAs($this->user);
+		$this->json('POST', '/comments', ['content' => 'lorem ipsum', 'author_id' => $this->user->getKey()]);
+		$comment = Comment::all()->last();
+
+		$this->json('POST', '/reactions', [
+			'content' => 'reply to a comment',
+			'author_id' => 0,
+			'comment_id' => $comment->getKey()
+		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+			->assertJsonValidationErrors(['author_id']);
+	}
+
+	/**
+	 * @todo come back to this
+	 */
+	public function it_throws_an_exception_if_the_author_is_not_authenticated()
+	{
+		$this->expectException(UnauthorizedException::class);
+
+		$this->actingAs($this->user);
+		$this->json('POST', '/comments', ['content' => 'lorem ipsum', 'author_id' => $this->user->getKey()]);
+		$comment = Comment::all()->last();
+
+		$unauthenticated = factory(User::class)->create();
+
+		$this->json('POST', '/reactions', [
+			'content' => 'reply to a comment',
+			'author_id' => $unauthenticated->getKey(),
+			'comment_id' => $comment->getKey()
+		]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_responds_with_a_422_if_the_comment_id_is_not_given()
+	{
+		$this->actingAs($this->user);
+
+		$this->json('POST', '/reactions', [
+			'content' => 'reply to a comment',
+			'author_id' => $this->user->getKey()
+		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+			->assertJsonValidationErrors(['comment_id']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_responds_with_a_422_if_the_comment_id_does_not_exist()
+	{
+		$this->actingAs($this->user);
+
+		$this->json('POST', '/reactions', [
+			'content' => 'reply to a comment',
+			'author_id' => $this->user->getKey(),
+			'comment_id' => 0
+		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+			->assertJsonValidationErrors(['comment_id']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_create_a_comment_reaction()
+	{
+		$this->actingAs($this->user);
+		$this->json('POST', '/comments', ['content' => 'lorem ipsum', 'author_id' => $this->user->getKey()]);
+		$comment = Comment::all()->last();
+
+		$this->json('POST', '/reactions', [
+			'content' => 'reply to a comment',
+			'author_id' => $this->user->getKey(),
+			'comment_id' => $comment->getKey()
+		]);
+
+		$reaction = CommentReaction::all()->last()->toArray();
+		$this->assertArrayHasKey('author_id', $reaction);
+		$this->assertArrayHasKey('comment_id', $reaction);
+		$this->assertSame(intval($reaction['author_id']), $this->user->getKey());
+		$this->assertSame(intval($reaction['comment_id']), $comment->getKey());
 	}
 }

@@ -24,16 +24,33 @@ class LikeControllerTest extends TestCase
 	 */
 	public function it_responds_with_a_401_if_the_user_is_not_authenticated()
 	{
-		$this->json('POST', '/likes/' . 0, [])->assertStatus(Response::HTTP_UNAUTHORIZED);
+		$user = factory(User::class)->create();
+
+		$comment = factory(Comment::class)->create([
+			'author_id' => $user->first()->getKey(),
+			'content' => 'sample content'
+		]);
+
+		$reaction = factory(CommentReaction::class)->create([
+			'author_id' => $user->first()->getKey(),
+			'comment_id' => $comment->first()->getKey(),
+			'content' => 'reaction to a comment'
+		]);
+
+		$this->json('POST', '/likes', [
+			'reaction_id' => $reaction->first()->getkey()
+		])->assertStatus(Response::HTTP_UNAUTHORIZED);
 	}
 
 	/**
 	 * @test
 	 */
-	public function it_responds_with_a_404_if_the_comment_reaction_does_not_exist()
+	public function it_responds_with_a_422_if_the_comment_reaction_does_not_exist()
 	{
 		$this->actingAs($this->user);
-		$this->json('POST', '/likes/' . 0, [])->assertStatus(Response::HTTP_NOT_FOUND);
+		$this->json('POST', '/likes', [
+			'reaction_id' => 0
+		])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 	}
 
 	/**
@@ -41,23 +58,27 @@ class LikeControllerTest extends TestCase
 	 */
 	public function it_can_increment_the_comment_reaction_likes_by_one()
 	{
-		$this->actingAs($this->user);
-		$this->json('POST', '/comments', ['content' => 'lorem ipsum', 'author_id' => $this->user->getKey()]);
+		$user = factory(User::class)->create();
 
-		$comment = Comment::all()->last();
-
-		$this->json('POST', '/reactions', [
-			'content' => 'reply to a comment',
-			'author_id' => $this->user->getKey(),
-			'comment_id' => $comment->getKey()
+		$comment = factory(Comment::class)->create([
+			'author_id' => $user->first()->getKey(),
+			'content' => 'sample content'
 		]);
 
-		$reaction = CommentReaction::all()->last();
+		$reaction = factory(CommentReaction::class)->create([
+			'author_id' => $user->first()->getKey(),
+			'comment_id' => $comment->first()->getKey(),
+			'content' => 'reaction to a comment'
+		]);
 
-		$this->assertSame(0, $reaction->getLikes());
+		$this->assertSame(0, $reaction->first()->getLikes());
 
-		$this->json('POST', '/likes/' . $reaction->getKey(), [])->assertStatus(Response::HTTP_FOUND);
+		$this->actingAs($user);
 
-		$this->assertSame(1, $reaction->find($reaction->getKey())->getLikes());
+		$this->json('POST', '/likes', [
+			'reaction_id' => $reaction->first()->getkey()
+		]);
+
+		$this->assertSame(1, $reaction->first()->getLikes());
 	}
 }

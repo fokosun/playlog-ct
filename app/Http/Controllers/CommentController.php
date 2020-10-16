@@ -5,6 +5,7 @@ namespace Playlog\Http\Controllers;
 use Playlog\User;
 use Playlog\Comment;
 use Playlog\Services\CommentService;
+use Illuminate\Support\Facades\Auth;
 use Playlog\Services\PhotoUploadService;
 use Playlog\Http\Requests\CommentStoreRequest;
 
@@ -21,12 +22,15 @@ class CommentController extends Controller
 	 */
     public function store(CommentStoreRequest $request, PhotoUploadService $uploadService, CommentService $service)
 	{
-		if (! $service->store($request)) {
+		$request->merge(['author_id' => Auth::user()->id]);
+
+		if (! $service->store($request->only(['author_id', 'content']))) {
 			return redirect()->back()->withErrors(['error' => 'There was an error processing this request. Please try again.']);
 		}
 
 		if ($request->file('photo')) {
-			$uploadService->upload($service->getComment(), $request, ['resource_photo_path' => 'photo_url']);
+			$request->merge(['resource_photo_path' => 'photo_url']);
+			$uploadService->upload($service->getComment(), $request);
 		}
 
 		return redirect('/');

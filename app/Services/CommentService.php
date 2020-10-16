@@ -3,15 +3,12 @@
 namespace Playlog\Services;
 
 use Playlog\Comment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\UnauthorizedException;
-use Playlog\Contracts\PlaylogServiceContract;
 
-class CommentService implements PlaylogServiceContract
+class CommentService
 {
 	/**
 	 * @var Comment
@@ -21,16 +18,12 @@ class CommentService implements PlaylogServiceContract
 	/**
 	 * Create a new comment
 	 *
-	 * @param Request $request
+	 * @param array $request
 	 * @return bool|mixed
 	 */
-	public function store(Request $request)
+	public function store(array $request)
 	{
-		$this->comment = new Comment([
-			'author_id' => Auth::user()->id,
-			'content' => $request->get('content'),
-			'photo_url' => $request->get('photo_url')
-		]);
+		$this->comment = new Comment($request);
 
 		return $this->comment->save();
 	}

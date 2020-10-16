@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 class PhotoUploadJob implements ShouldQueue
 {
@@ -20,19 +21,18 @@ class PhotoUploadJob implements ShouldQueue
     protected Model $resource;
     protected Request $request;
     public array $options;
+	protected array $supported_extensions = ['jpg', 'png', 'jpeg'];
 
 	/**
 	 * Create a new job instance.
 	 *
 	 * @param Model $resource
 	 * @param Request $request
-	 * @param array $options
 	 */
-    public function __construct(Model $resource, Request $request, $options = [])
+    public function __construct(Model $resource, Request $request)
     {
         $this->resource = $resource;
         $this->request = $request;
-        $this->options = $options;
     }
 
 	/**
@@ -46,12 +46,20 @@ class PhotoUploadJob implements ShouldQueue
 
     	$photo = $this->request->file('photo');
     	$ext = $photo->getClientOriginalExtension();
-    	Storage::disk('public')->put($photo->getFilename() . '.' . $ext, File::get($photo));
 
-		Log::info('Image upload completed.');
+    	if (in_array($ext, $this->supported_extensions)) {
+			Storage::disk('public')->put($photo->getFilename() . '.' . $ext, File::get($photo));
 
-		if ($this->options["resource_photo_path"]) {
-			$this->resource->update([$this->options["resource_photo_path"] => $photo->getFilename() . '.' . $ext]);
+			Log::info('Image upload completed.');
+
+			$photo_path = $this->request->get('resource_photo_path');
+
+			if (isset($photo_path)) {
+				$this->resource->update([$photo_path => $photo->getFilename() . '.' . $ext]);
+			}
+		} else {
+			Log::info('Image Extension not supported');
+			throw new UnsupportedMediaTypeHttpException('Image Extension not supported');
 		}
     }
 }

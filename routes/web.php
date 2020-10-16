@@ -28,5 +28,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::post('/reactions', 'CommentReactionController@store')->name('reaction.new');
 
-	Route::post('/likes/{comment_id}', 'likeController@store')->name('like.new');
+	Route::post('/likes', 'likeController@store')->name('like.new');
 });

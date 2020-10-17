@@ -39,10 +39,10 @@ What my implementation achieved is:
 - bubble up comments that have a response as a way to suffice relevant data to the user
 ```
 
-## RUNNING THE APPLICATION LOCAlLY
+## RUNNING THE APPLICATION LOCALLY
 
-I use Homestead, use whatever works for you. If you're using homestead, launch the app (ensure all your setup/config is done correctly)
-
+I use [Laravel Homestead](https://laravel.com/docs/6.x/homestead), use whatever works for you. If you're using homestead, 
+launch the app (ensure all your setup/config is done correctly)
 
 Dev Setup
 - clone the repository
@@ -63,15 +63,14 @@ DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 ```
-Interested in seeing the query logs, set APP_DEBUG to true.
+Interested in seeing the query logs, set `APP_DEBUG` to true.
 
 - Run the migrations
 ```
 php artisan migrate
 ```
 
-- Running the app
-For image uploads to be successful, the queues need to be running.
+- For image uploads to be successful, the queues need to be running.
 ```
 php artisan queue:work
 ```
@@ -112,6 +111,11 @@ applies, also deletes the uploaded image from Storage disk
 ## What is left:
 - I have 1 failing test.
 
-More;
-If you have APP_DEBUG set to true, and you encounter any issues viewing the app, repeat the steps in the
-additional setup above
+## What I would add if I had more time
+- The ability to view a page to display all the replies (reactions) to a comment by 
+clicking on the `see all` button
+
+## More:
+
+If you have `APP_DEBUG` set to true, and you encounter any issues viewing the app, 
+repeat the steps in the additional setup above.

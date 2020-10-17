@@ -36,6 +36,22 @@ class RegisterControllerTest extends TestCase
 	/**
 	 * @test
 	 */
+	public function it_responds_with_302_if_the_username_is_taken()
+	{
+		$this->json('POST', '/register', [
+			'username' => 'taken',
+			'password' => '123456789'
+		]);
+
+		$this->json('POST', '/register', [
+			'username' => 'taken',
+			'password' => '123456789'
+		])->assertStatus(Response::HTTP_FOUND);
+	}
+
+	/**
+	 * @test
+	 */
 	public function it_responds_with_422_if_the_password_is_not_given()
 	{
 		$this->json('POST', '/register', ['username' => 'sally'])

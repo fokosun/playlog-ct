@@ -96,9 +96,11 @@ php ./vendor/bin/phpunit tests/
 The comment reactions too are also displayed in the same order with the newest comments always at 
 the top.
 - Ability for a user to create a new comment [text and images (jpg, png, jpeg only)], 
-respond to existing comments, delete only their own comment, like any comment
-- Deleting a comment, deletes the resource and its relationships where cascading 
-applies, also deletes the uploaded image from Storage disk.
+respond to existing comments
+- Delete only their own comment
+- Like any comment
+- Deleting a comment, deletes the resource and its relationships where cascading applies, 
+also deletes the uploaded image from Storage disk.
 - Provide automated tests (Functional, Unit and Application).
 
 ## What is left:

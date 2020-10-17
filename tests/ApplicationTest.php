@@ -14,11 +14,10 @@ class ApplicationTest extends TestCase
 	/**
 	 * @test
 	 */
-	public function a_guest_is_redirected_to_the_login_page()
+	public function a_guest_can_see_the_landing_page()
 	{
 		$this->json('GET', '/')
-			->assertRedirect('/login')
-			->assertStatus(Response::HTTP_FOUND);
+			->assertStatus(Response::HTTP_OK);
 	}
 
 	/**
@@ -36,7 +35,7 @@ class ApplicationTest extends TestCase
 	/**
 	 * @test
 	 */
-	public function a_guest_can_see_the_register_page()
+	public function a_guest_can_see_the_register_form()
 	{
 		$this->json('GET', '/register')
 			->assertSee('username')

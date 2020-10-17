@@ -12,7 +12,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-        <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/welcome.css') }}" rel="stylesheet" type="text/css">
 
     </head>
     <body>
@@ -32,12 +32,7 @@
             <div class="content">
                 <br><br><br><br>
                 <div class="title m-b-md">
-                    Comments feed-inator
-                </div>
-                <div class="feed-area">
-                    <div class="items">
-                        feed item
-                    </div>
+                    Comments Feed App
                 </div>
             </div>
         </div>

@@ -27,15 +27,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-	/**
-	 * A User has many reactions to comments
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-    public function reactions()
-	{
-		return $this->hasMany(CommentReaction::class, 'author_id');
-	}
+//	/**
+//	 * A User has many reactions to comments
+//	 *
+//	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+//	 */
+//    public function reactions()
+//	{
+//		return $this->hasMany(CommentReaction::class, 'author_id');
+//	}
 
 	/**
 	 * A user has many comments

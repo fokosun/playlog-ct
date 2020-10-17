@@ -16,12 +16,10 @@ class FeedController extends Controller
 	 */
     public function index(FeedService $service)
 	{
-		$comments = $service->index(
-			Comment::class,
-			[
+		$comments = $service->get(
+			Comment::class, [
 				'user',
-				'reactions'
-			], [
+				], [
 				'order_by' => 'updated_at',
 				'order' => 'desc',
 				'paginate' => 5

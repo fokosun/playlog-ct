@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Playlog\CommentReaction;
@@ -36,7 +37,7 @@ class FeedServiceTest extends TestCase
 		]);
 
 		$service = new FeedService();
-		$comments = $service->index(Comment::class, ['user', 'reactions'], ['order_by' => 'updated_at', 'order' => 'desc']);
+		$comments = $service->get(Comment::class, ['user', 'reactions'], ['order_by' => 'updated_at', 'order' => 'desc']);
 
 		$this->assertInstanceOf(Collection::class, $comments);
 	}
@@ -61,7 +62,7 @@ class FeedServiceTest extends TestCase
 		]);
 
 		$service = new FeedService();
-		$comments = $service->index(Comment::class,
+		$comments = $service->get(Comment::class,
 			[
 				'user',
 				'reactions'
@@ -98,7 +99,7 @@ class FeedServiceTest extends TestCase
 		$original = Comment::all();
 
 		$service = new FeedService();
-		$default_order_feed = $service->index(Comment::class);
+		$default_order_feed = $service->get(Comment::class);
 
 		$this->assertSame($default_order_feed->first()->getKey(), $original->first()->getKey());
 		$this->assertSame($default_order_feed->last()->getKey(), $original->last()->getKey());
@@ -124,7 +125,7 @@ class FeedServiceTest extends TestCase
 		]);
 
 		$service = new FeedService();
-		$default_order_feed = $service->index(Comment::class, ['user']);
+		$default_order_feed = $service->get(Comment::class, ['user']);
 
 		$this->assertInstanceOf(User::class, $default_order_feed->first()->user);
 	}
@@ -136,7 +137,6 @@ class FeedServiceTest extends TestCase
 	 * To see the effect, add a comment reaction to an existing comment, this updates the
 	 * updated_at date of the original comment
 	 *
-	 * @todo: revisit this
 	 * @test
 	 */
 	public function it_returns_the_comments_in_chronological_order_when_an_update_occurs()
@@ -155,29 +155,33 @@ class FeedServiceTest extends TestCase
 			'author_id' => $users->last()->id
 		]);
 
-		$original = Comment::all();
+		$beforeReaction = Comment::all();
 
-		/*
-		 * add a reply to the last comment
-		 */
 		$user = factory(User::class)->create();
 		$this->actingAs($user);
-		$this->json('POST', '/reactions', [
-			'comment' => 'reply to a comment.',
+
+		factory(CommentReaction::class)->create([
+			'content' => 'reply to a comment.',
 			'author_id' => $user->id,
-			'comment_id' => $original->last()->getKey()
+			'comment_id' => $beforeReaction->last()->getKey(),
+			'likes' => 0
 		]);
 
-		$original = Comment::all();
+		$beforeReaction->last()->updated_at = '2020-01-01 00:00:00';
+		//harcoded date since objects are run within the same minute does not show any diff
+		//to prove that the feedservice actually does the sorting, the order is set to asc because
+		//of this backdated date
+
+		$beforeReaction->last()->save();
 
 		$feedService = new FeedService();
-		$chrono_order_feed = $feedService->index(Comment::class, ['user'], [
+
+		$chrono_order_feed = $feedService->get(Comment::class, ['user'], [
 				'order_by' => 'updated_at',
-				'order' => 'desc'
+				'order' => 'asc'
 			]
 		);
 
-		$this->assertSame($chrono_order_feed->first()->getKey(), $original->last()->getKey());
-		$this->assertSame($chrono_order_feed->last()->getKey(), $original->first()->getKey());
+		$this->assertSame($chrono_order_feed->first()->getKey(), $beforeReaction->last()->getKey());
 	}
 }

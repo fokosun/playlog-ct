@@ -21,6 +21,6 @@ class CommentReactionController extends Controller
 			return redirect()->back()->withErrors('There was ab error processing this request. Please try again');
 		}
 
-		return redirect('/');
+		return redirect('/feed');
 	}
 }

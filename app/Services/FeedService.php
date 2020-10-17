@@ -18,7 +18,7 @@ class FeedService
 	 *
 	 * @return mixed
 	 */
-	public function index(string $resource, $relations = [], $options = [])
+	public function get(string $resource, $relations = [], $options = [])
 	{
 		$collection = $resource::with($relations)
 			->orderBy(

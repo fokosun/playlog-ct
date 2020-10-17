@@ -48,4 +48,14 @@ class CommentReaction extends Model
 	{
 		return (int) $this->likes;
 	}
+
+	/**
+	 * Get the author instance
+	 *
+	 * @return mixed
+	 */
+	public function scopeUsername()
+	{
+		return User::where('id', $this->author_id)->get()->first()->username;
+	}
 }

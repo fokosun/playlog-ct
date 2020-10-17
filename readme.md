@@ -13,7 +13,7 @@ content with the `latest published content` first.
 In order to avoid confusion, please take note of the following:
 - A user can create a comment (think of this as a post or status update, twitter type thing)
 - A user can add a reply to an existing comment (It is referred to as comment reaction in 
-this app. Think of this as commenting on a tweet)
+this app. Think of this as replying to a tweet)
 
 ### Models and their relationships
 - User [has a `hasMany relationship` with Comment and also a `hasMany` relationship with CommentReaction]

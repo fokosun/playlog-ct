@@ -31,7 +31,7 @@ a new reaction(reply) is created and saved.
 
 - The feed service eagerloads the comments with its `user` relationship and also paginates by 
 limiting the collection to a specified value. This helps avoid the n + 1 query situation 
-and boosts user experience in terms of the response duration.
+and boosts user experience in terms of the response duration respectively.
 ```
 
 ## RUNNING THE APPLICATION LOCALLY

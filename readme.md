@@ -72,7 +72,7 @@ php artisan queue:work
 
 Additional setup:
 - If you have issues accessing the app at this point , its likely a caching issue or something.
-try any or a combination of the following:
+Try any or a combination of the following:
 
 ```
 composer dumpautoload 
@@ -91,17 +91,15 @@ php ./vendor/bin/phpunit tests/
 ```
 
 ## In Summary, what was I able to finish?
-- User register/login with username and password + validation
-- User logout
-- Guest access
-- Chronological feed (paginated) - the comments are displayed with the lastest published content. 
+- User register/logout/login with username and password + validation
+- Chronological feed (paginated) - the comments are displayed with the latest published content. 
 The comment reactions too are also displayed in the same order with the newest comments always at 
-the top 
+the top.
 - Ability for a user to create a new comment [text and images (jpg, png, jpeg only)], 
 respond to existing comments, delete only their own comment, like any comment
 - Deleting a comment, deletes the resource and its relationships where cascading 
-applies, also deletes the uploaded image from Storage disk
-- Provide automated tests (Functional, Unit and Application)
+applies, also deletes the uploaded image from Storage disk.
+- Provide automated tests (Functional, Unit and Application).
 
 ## What is left:
 - I have 1 failing test.

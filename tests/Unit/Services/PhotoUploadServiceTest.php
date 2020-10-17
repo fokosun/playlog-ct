@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Playlog\Jobs\PhotoUploadJob;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Playlog\Services\PhotoUploadService;
 
 class PhotoUploadServiceTest extends TestCase
@@ -26,7 +26,7 @@ class PhotoUploadServiceTest extends TestCase
 	/**
 	 * @test
 	 */
-	public function it_does_not_dispatched_the_photo_upload_job_if_the_request_is_missing_the_file()
+	public function it_does_not_dispatch_the_photo_upload_job_if_the_request_is_missing_the_file()
 	{
 		Queue::fake();
 
@@ -46,12 +46,10 @@ class PhotoUploadServiceTest extends TestCase
 	}
 
 	/**
-	 * @todo revisit this why its failing
+	 * @test
 	 */
-	public function it_dispatches_the_photo_upload_job_if_the_request_contains_a_file()
+	public function it_successfully_uploads_the_image()
 	{
-		Queue::fake();
-
 		$this->actingAs($this->user);
 
 		$comment = factory(Comment::class)->create([
@@ -59,15 +57,19 @@ class PhotoUploadServiceTest extends TestCase
 			'content' => 'lorem ipsum'
 		]);
 
+		$this->assertNull($comment->photo_url);
+
 		$service = new PhotoUploadService();
 
 		$request = new Request();
-		$request->files->set('photo', UploadedFile::fake()->image('avatar.jpeg'));
+		$request->files->set('photo', UploadedFile::fake()->image('avatar.png'));
+		$request->merge(['resource_photo_path' => 'photo_url']);
 
 		$service->upload($comment->first(), $request);
+		$comment = Comment::find($comment->first()->getKey());
 
-		Queue::assertPushed(PhotoUploadJob::class, function ($job) {
-			return $job->resource instanceof Model;
-		});
+		$this->assertNotNull($comment->photo_url);
+
+		Storage::disk('public')->delete($comment->photo_url); //cleanup
 	}
 }

@@ -103,9 +103,6 @@ respond to existing comments
 also deletes the uploaded image from Storage disk.
 - Provide automated tests (Functional, Unit and Application).
 
-## What is left:
-- I have 1 failing test.
-
 ## What I would add if I had more time
 - The ability to view a page to display all the replies (reactions) to a comment by 
 clicking on the `see all` button

@@ -60,7 +60,7 @@
                             <div class="col-md-10">
                                 <br />
                                 @if(count($comment->reactions()->get()) > 0)
-                                    @foreach($comment->reactions()->get()->sortByDesc('id') as $reaction)
+                                    @foreach($comment->reactions()->get()->take(3)->sortByDesc('id') as $reaction)
                                         <div class="col-md-12">
                                             <div class="col-md-6">
                                                 <img src="https://megatherm-dev.in/rba/wp-content/uploads/2019/02/noavatar-profile.jpg"
@@ -98,6 +98,11 @@
                                         </div>
                                         <br />
                                     @endforeach
+                                    <div>
+                                        <button>
+                                            See All
+                                        </button>
+                                    </div>
                                 @endif
                             </div>
                         </div>

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
     	$min = 1;
-    	$max = 200;
+    	$max = 50;
 
         $users = factory(User::class, $max)->create();
 

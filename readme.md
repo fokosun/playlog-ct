@@ -22,7 +22,7 @@ this app. Think of this as replying to a tweet)
 
 ### The Feed Service
 ```
-- The feed service bubbles up the latest comments by ordering the comments with the `updated_at`
+- The feed service bubbles up the latest comments by ordering the comments by the `updated_at`
 field in descending order. That way, the latest comments stay at the top.
 
 - When a comment gets a reply (reaction), the comment needs to be notified of this update. 

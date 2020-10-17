@@ -15,7 +15,7 @@ In order to avoid confusion, please take note of the following:
 - A user can add a comment to an existing comment (It is referred to as comment reaction in this app. Think of this as commenting on a tweet)
 
 ### Models and their relationships
-- User [has a `hasMany relationship` with Comment and also a `hasmany` relationship with CommentReaction]
+- User [has a `hasMany relationship` with Comment and also a `hasMany` relationship with CommentReaction]
 - Comment [has a `belongsTo` relationship with User and a `hasMany` relationship with CommentReaction]
 - CommentReaction [has a `belongsTo` relationship with Comment and a `belongsTo` relationship with User]
 
@@ -100,3 +100,26 @@ applies, also deletes the uploaded image from Storage disk
 
 ## What is left:
 - I have 2 failing tests.
+
+
+
+sudo chmod -R 777 storage/logs
+APP_DEBUG=false
+
+php artisan route:clear
+
+php artisan config:clear
+
+php artisan cache:clear
+
+query optimization
+pagination with eagerloading both educed the response time and the number of hydrated
+ models - more performance
+ 
+ 
+ ```
+		return Comment::with(['user'])
+			->orderBy('updated_at', 'desc')
+			->paginate(10);
+
+```

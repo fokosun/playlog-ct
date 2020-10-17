@@ -3,12 +3,12 @@
 Create a program that will allow users to post comments, and view them in a chronological feed.
 ```
 
-#### A quick definition: 
+### A quick definition: 
 According to the internet, a chronological feed is used in social media platforms to display 
 content to users via a timeline or newsfeed in a chronological format by displaying 
 content with the `latest published content` first.
 
-Terminologies as used in this app:
+### Terminologies as used in this app:
 
 In order to avoid confusion, please take note of the following:
 - A user can create a comment (think of this as a post or status update, twitter type thing)

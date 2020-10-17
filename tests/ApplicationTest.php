@@ -14,10 +14,10 @@ class ApplicationTest extends TestCase
 	/**
 	 * @test
 	 */
-	public function a_guest_can_see_the_landing_page()
+	public function a_guest_cannot_see_the_landing_page()
 	{
 		$this->json('GET', '/')
-			->assertStatus(Response::HTTP_OK);
+			->assertStatus(Response::HTTP_FOUND);
 	}
 
 	/**

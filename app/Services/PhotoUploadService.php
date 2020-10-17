@@ -16,7 +16,6 @@ class PhotoUploadService
 	 */
 	public function upload(Model $resource, Request $request)
 	{
-//		dd($request->file('photo'));
 		if ($request->file('photo')) {
 			PhotoUploadJob::dispatchNow($resource, $request);
 		}

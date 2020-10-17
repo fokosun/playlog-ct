@@ -4,6 +4,7 @@ namespace Playlog\Jobs;
 
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
@@ -18,8 +19,9 @@ class PhotoUploadJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected Model $resource;
-    protected Request $request;
+    public Model $resource;
+    public Request $request;
+    public UploadedFile $photo;
     public array $options;
 	protected array $supported_extensions = ['jpg', 'png', 'jpeg'];
 
@@ -33,6 +35,7 @@ class PhotoUploadJob implements ShouldQueue
     {
         $this->resource = $resource;
         $this->request = $request;
+        $this->photo = $this->request->file('photo');
     }
 
 	/**
@@ -44,22 +47,24 @@ class PhotoUploadJob implements ShouldQueue
     {
 		Log::info('Uploading image ...');
 
-    	$photo = $this->request->file('photo');
-    	$ext = $photo->getClientOriginalExtension();
+		try {
+			$ext = $this->photo->getClientOriginalExtension();
 
-    	if (in_array($ext, $this->supported_extensions)) {
-			Storage::disk('public')->put($photo->getFilename() . '.' . $ext, File::get($photo));
+			if (in_array($ext, $this->supported_extensions)) {
+				Storage::disk('public')->put($this->photo->getFilename() . '.' . $ext, File::get($this->photo));
 
-			Log::info('Image upload completed.');
+				Log::info('Image upload completed.');
 
-			$photo_path = $this->request->get('resource_photo_path');
+				$photo_path = $this->request->get('resource_photo_path');
 
-			if (isset($photo_path)) {
-				$this->resource->update([$photo_path => $photo->getFilename() . '.' . $ext]);
+				if (isset($photo_path)) {
+					$this->resource->update([$photo_path => $this->photo->getFilename() . '.' . $ext]);
+				}
+			} else {
+				throw new UnsupportedMediaTypeHttpException('Image Extension not supported');
 			}
-		} else {
-			Log::info('Image Extension not supported');
-			throw new UnsupportedMediaTypeHttpException('Image Extension not supported');
+		} catch (\Exception $e){
+			Log::info('Upload failed', ['message' => $e->getMessage()]);
 		}
     }
 }

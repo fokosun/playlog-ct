@@ -57,7 +57,7 @@ class PhotoUploadJob implements ShouldQueue
 
 				$photo_path = $this->request->get('resource_photo_path');
 
-				if (isset($photo_path)) {
+				if (isset($photo_path) && $this->resource instanceof Model) {
 					$this->resource->update([$photo_path => $this->photo->getFilename() . '.' . $ext]);
 				}
 			} else {

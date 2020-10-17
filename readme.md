@@ -21,14 +21,15 @@ In order to avoid confusion, please take note of the following:
 
 ### The Feed Service
 ```
-- The feed service bubbles up the latest comments by ordering the comments with the updated_at field in 
-descending order. That way, the latest comments stay at the top
+- The feed service bubbles up the latest comments by ordering the comments with the updated_at field
+in descending order. That way, the latest comments stay at the top.
 
-- When a comment gets a reply (reaction), the comment needs to be notified of this update. To achieve this,
-the comment's updated_at field is set to the current datetime stamp when a new reaction(reply) is created and saved.
+- When a comment gets a reply (reaction), the comment needs to be notified of this update. 
+To achieve this, the comment's `updated_at` field is set to the current datetime stamp when 
+a new reaction(reply) is created and saved.
 
-- The feed service eagerloads the comments with its `user` relationship and also paginates 
-by limiting it to a specified value. This is to both avoid the n + 1 query situation and boosts user 
+- The feed service eagerloads the comments with its `user` relationship and also paginates by 
+limiting it to a specified value. This is to both avoid the n + 1 query situation and boosts user 
 experience in terms of the response duration.
 ```
 

@@ -41,6 +41,9 @@ What my implementation achieved is:
 
 ## RUNNING THE APPLICATION LOCAlLY
 
+I use Homestead, use whatever works for you. If you're using homestead, launch the app (ensure all your setup/config is done correctly)
+
+
 Dev Setup
 - clone the repository
 - install dependencies and set app key
@@ -51,6 +54,8 @@ composer install && php artisan key:gen
 
 - update your .env file (See .example.env)
 ```
+APP_DEBUG=false
+
 DB_CONNECTION=
 DB_HOST=
 DB_PORT=
@@ -58,30 +63,34 @@ DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 ```
+Interested in seeing the query logs, set APP_DEBUG to true.
 
 - Run the migrations
 ```
 php artisan migrate
 ```
 
-- running the app
-
-I use Homestead, use whatever works for you. If you're using homestead, launch the app (ensure all your setup/config is done correctly)
-
-Don't forget to keep the queues running.
+- Running the app
+For image uploads to be successful, the queues need to be running.
 ```
 php artisan queue:work
 ```
 
 Additional setup:
-- If you have issues accessing the app at this point , its not the app, 
-its probably a caching issue or something, try:
+- If you have issues accessing the app at this point , its likely a caching issue or something.
+try any or a combination of the following:
 
 ```
-composer dumpautoload && php artisan cache:clear && php artisan route:cache
+composer dumpautoload 
+
+php artisan cache:clear
+
+php artisan route:cache
+
+php artisan config:clear
 ```
 
-Run the tests:
+Running the tests:
 - From the root directory run
 ```
 php ./vendor/bin/phpunit tests/
@@ -91,7 +100,9 @@ php ./vendor/bin/phpunit tests/
 - User register/login with username and password + validation
 - User logout
 - Guest access
-- Chronological feed (paginated)
+- Chronological feed (paginated) - the comments are displayed with the lastest published content. 
+The comment reactions too are also displayed in the same order with the newest comments always at 
+the top 
 - Ability for a user to create a new comment [text and images (jpg, png, jpeg only)], 
 respond to existing comments, delete only their own comment, like any comment
 - Deleting a comment, deletes the resource and its relationships where cascading 
@@ -99,27 +110,8 @@ applies, also deletes the uploaded image from Storage disk
 - Provide automated tests (Functional, Unit and Application)
 
 ## What is left:
-- I have 2 failing tests.
+- I have 1 failing test.
 
-
-
-sudo chmod -R 777 storage/logs
-APP_DEBUG=false
-
-php artisan route:clear
-
-php artisan config:clear
-
-php artisan cache:clear
-
-query optimization
-pagination with eagerloading both educed the response time and the number of hydrated
- models - more performance
- 
- 
- ```
-		return Comment::with(['user'])
-			->orderBy('updated_at', 'desc')
-			->paginate(10);
-
-```
+More;
+If you have APP_DEBUG set to true, and you encounter any issues viewing the app, repeat the steps in the
+additional setup above

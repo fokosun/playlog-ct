@@ -106,7 +106,7 @@ respond to existing comments
 - Like any comment
 - Deleting a comment, deletes the resource and its relationships where cascading applies, 
 also deletes the uploaded image from Storage disk.
-- Provide automated tests (Functional, Unit and Application).
+- Provide automated tests (Feature, Unit and Application).
 
 ## What I would add if I had more time
 - The ability to view a page to display all the replies (reactions) to a comment by 

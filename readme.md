@@ -60,9 +60,14 @@ DB_PASSWORD=
 ```
 Interested in seeing the query logs, set `APP_DEBUG` to true.
 
-- Run the migrations
+- Run the migrations 
 ```
 php artisan migrate
+```
+
+- Seed the database (optional)
+```
+php artisan db:seed
 ```
 
 - For image uploads to be successful, the queues need to be running.
@@ -109,5 +114,5 @@ clicking on the `see all` button
 
 ## More:
 
-If you have `APP_DEBUG` set to true, and you encounter any issues viewing the app, 
+- If you have `APP_DEBUG` set to true, and you encounter any issues viewing the app, 
 repeat the steps in the additional setup above.

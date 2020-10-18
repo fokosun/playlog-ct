@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services;
 
 use Playlog\User;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Tests\TestCase;
 use Playlog\Comment;
 use Illuminate\Http\Request;
